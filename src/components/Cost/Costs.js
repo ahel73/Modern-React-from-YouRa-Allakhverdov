@@ -2,24 +2,40 @@ import Card from '../Ui/Card';
 import CostItem from './CostItem';
 import './Costs.css';
 import CostsFilter from "./CostsFilter";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 
 export default function Costs(prop) {
-    const [selectedYear, setSelectedYear] = useState("2021");
+    const [selectedYear, setSelectedYear] = useState(() => "");
+    const [costs, setCostas] = useState(prop.costs)
+    console.log('costs', costs);
+
+        useEffect(() => {
+            if (selectedYear) {
+                const filterCosts = prop.costs.filter(item => {
+                    return item.date.getFullYear().toString() === selectedYear
+                } );
+                console.log('filterCosts', filterCosts)
+                setCostas(filterCosts)
+            } else {
+                setCostas(prop.costs)
+            }
+        }, [selectedYear, prop.costs]);
+
 
     const yearChangeHandler = (year) => {
         setSelectedYear(year);
     };
-    
+
     return (
         <Card className='costs'>
             <CostsFilter year={selectedYear} onChangeYear={yearChangeHandler} />
             {
-                prop.costs.map((el) => (
+                costs.map((cost) => (
                     <CostItem
-                        date={el.date}
-                        description={el.description}
-                        amount={el.amount}
+                        key={cost.id}
+                        date={cost.date}
+                        description={cost.description}
+                        amount={cost.amount}
                     />
                 ))
             }       
