@@ -1,7 +1,9 @@
 import CostForm from './CostForm';
 import "./NewCost.css";
+import React, {useState} from "react";
 
 const NewCost = (props) => {
+  const [renderForm, setRenderForm] = useState(false)
 
   const saveCostDataHandler = (inputCostData) => {
     const costData = {
@@ -10,11 +12,30 @@ const NewCost = (props) => {
     }
     console.log('costData', costData)
     props.onAddCost(costData)
+    changeFormHandler();
+  }
+  const changeFormHandler = () => {
+    setRenderForm(!renderForm);
   }
 
   return (
     <div className="new-cost">
-      <CostForm onSaveCostData={saveCostDataHandler} />
+      { !renderForm ?
+        <div className="new-cost__actions">
+          <button
+            type="button"
+            onClick={changeFormHandler}
+            changeFormHandler={changeFormHandler}
+          >
+              Добавить Новый Расход
+          </button>
+        </div>
+       :
+        <CostForm
+          onSaveCostData={saveCostDataHandler}
+          changeFormHandler={changeFormHandler}
+        />
+      }
     </div>
   )
 }
