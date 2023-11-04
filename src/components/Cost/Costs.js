@@ -3,6 +3,7 @@ import CostList from './CostList'
 import CostsFilter from "./CostsFilter";
 import React, {useEffect, useState} from "react";
 import CostsDiagram from "./CostsDiagram";
+import './Costs.css'
 
 export default function Costs(prop) {
     const [selectedYear, setSelectedYear] = useState(() => "");
